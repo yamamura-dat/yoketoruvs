@@ -28,6 +28,8 @@ namespace yoketoruvs
         const string EnemyText = "(oAo)";
         const string ItemText = "◆";
 
+        static Random rand = new Random();
+
         enum State
         {
             None =-1,//無効
@@ -84,6 +86,17 @@ namespace yoketoruvs
                     nextState = State.Clear;
                 }
             }
+
+            if(currentState == State.Game)
+            {
+                UpdataGame();
+            }
+        }
+
+        void UpdataGame()
+        {
+            Point mp = PointToClient(MousePosition);
+            mp = PointToClient(mp);
         }
 
         void initProc()
@@ -108,7 +121,14 @@ namespace yoketoruvs
                     startbotton.Visible = false;
                     copyrightLabel.Visible = false;
                     HighScoreLabel.Visible = false;
-                    break;
+
+                    for (int i = EnemyIndex;i<ChrMax;i++)
+                    {
+                        chrs[i].Left = rand.Next(ClientSize.Width - chrs[i].Width);
+                        chrs[i].Top = rand.Next(ClientSize.Height - chrs[i].Height);
+                    }
+
+                        break;
 
                 case State.Gameover:
                     gameoverLabel.Visible = true;
