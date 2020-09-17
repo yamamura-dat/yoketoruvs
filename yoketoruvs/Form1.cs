@@ -15,6 +15,19 @@ namespace yoketoruvs
     {
         const bool isDebug = true;
 
+        const int PlayerMax = 1;
+        const int EnemyMax = 10;
+        const int ItemMax = 10;
+        const int ChrMax = PlayerMax + EnemyMax + ItemMax;
+        Label[] chrs = new Label[ChrMax];
+        const int PlayerIndex = 0;
+        const int EnemyIndex = PlayerIndex + PlayerMax;
+        const int ItemIndex = EnemyIndex + EnemyMax;
+
+        const string PlayerText = "(｀・ω・´)";
+        const string EnemyText = "(oAo)";
+        const string ItemText = "◆";
+
         enum State
         {
             None =-1,//無効
