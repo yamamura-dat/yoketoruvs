@@ -109,22 +109,22 @@
             // gameoverLabel
             // 
             this.gameoverLabel.AutoSize = true;
-            this.gameoverLabel.Font = new System.Drawing.Font("HGP創英角ｺﾞｼｯｸUB", 72F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.gameoverLabel.Font = new System.Drawing.Font("Broadway", 72F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gameoverLabel.ForeColor = System.Drawing.Color.Blue;
-            this.gameoverLabel.Location = new System.Drawing.Point(250, 196);
+            this.gameoverLabel.Location = new System.Drawing.Point(183, 196);
             this.gameoverLabel.Name = "gameoverLabel";
-            this.gameoverLabel.Size = new System.Drawing.Size(513, 97);
+            this.gameoverLabel.Size = new System.Drawing.Size(635, 109);
             this.gameoverLabel.TabIndex = 6;
             this.gameoverLabel.Text = "GAMEOVER";
             // 
             // clearLabel
             // 
             this.clearLabel.AutoSize = true;
-            this.clearLabel.Font = new System.Drawing.Font("HGP創英角ｺﾞｼｯｸUB", 72F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.clearLabel.Font = new System.Drawing.Font("Broadway", 72F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.clearLabel.ForeColor = System.Drawing.Color.Red;
-            this.clearLabel.Location = new System.Drawing.Point(340, 196);
+            this.clearLabel.Location = new System.Drawing.Point(305, 184);
             this.clearLabel.Name = "clearLabel";
-            this.clearLabel.Size = new System.Drawing.Size(322, 97);
+            this.clearLabel.Size = new System.Drawing.Size(391, 109);
             this.clearLabel.TabIndex = 7;
             this.clearLabel.Text = "CLEAR";
             // 
@@ -135,8 +135,9 @@
             this.titleBotton.Name = "titleBotton";
             this.titleBotton.Size = new System.Drawing.Size(224, 93);
             this.titleBotton.TabIndex = 8;
-            this.titleBotton.Text = "タイトルへ";
+            this.titleBotton.Text = "Back To Title ";
             this.titleBotton.UseVisualStyleBackColor = true;
+            this.titleBotton.Click += new System.EventHandler(this.titleBotton_Click);
             // 
             // timer1
             // 

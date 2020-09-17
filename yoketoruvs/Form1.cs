@@ -7,11 +7,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Runtime.InteropServices;
 
 namespace yoketoruvs
 {
     public partial class Form1 : Form
     {
+        const bool isDebug = true;
+
         enum State
         {
             None =-1,//無効
@@ -22,6 +25,10 @@ namespace yoketoruvs
         }
         State currentState = State.None;
         State nextState = State.Title;
+
+        [DllImport("user32.dll")]
+        public static extern short GetAsyncKeyState(int vKey);
+
         public Form1()
         {
 
@@ -32,6 +39,18 @@ namespace yoketoruvs
             if (nextState != State.None)
             {
                 initProc();
+            }
+
+            if (isDebug)
+            {
+                if (GetAsyncKeyState((int)Keys.O) < 0)
+                {
+                    nextState = State.Gameover;
+                }
+                else if(GetAsyncKeyState((int)Keys.C) < 0)
+                {
+                    nextState = State.Clear;
+                }
             }
         }
 
@@ -58,6 +77,17 @@ namespace yoketoruvs
                     copyrightLabel.Visible = false;
                     HighScoreLabel.Visible = false;
                     break;
+
+                case State.Gameover:
+                    gameoverLabel.Visible = true;
+                    titleBotton.Visible = true;
+                    break;
+
+                case State.Clear:
+                    clearLabel.Visible = true;
+                    titleBotton.Visible = true;
+                    HighScoreLabel.Visible = true;
+                    break;
             }
         }
         private void label2_Click(object sender, EventArgs e)
@@ -73,6 +103,11 @@ namespace yoketoruvs
         private void startbotton_Click(object sender, EventArgs e)
         {
             nextState = State.Game;
+        }
+
+        private void titleBotton_Click(object sender, EventArgs e)
+        {
+            nextState = State.Title;
         }
     }
 }
