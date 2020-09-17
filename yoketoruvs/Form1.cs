@@ -41,6 +41,9 @@ namespace yoketoruvs
         State currentState = State.None;
         State nextState = State.Title;
 
+        int[] vx = new int[ChrMax];
+        int[] vy = new int[ChrMax];
+
         [DllImport("user32.dll")]
         public static extern short GetAsyncKeyState(int vKey);
 
@@ -97,6 +100,7 @@ namespace yoketoruvs
         {
             Point mp = PointToClient(MousePosition);
             mp = PointToClient(mp);
+  
         }
 
         void initProc()
