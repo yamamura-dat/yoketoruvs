@@ -45,7 +45,7 @@ namespace yoketoruvs
         int[] vx = new int[ChrMax];
         int[] vy = new int[ChrMax];
         int itemcount = ItemMax;
-        int timecount = 100;
+        int timecount = 301;
         int hiscore = 0;
 
         [DllImport("user32.dll")]
@@ -80,8 +80,7 @@ namespace yoketoruvs
         {
             if (nextState != State.None)
             {
-                timecount = 100;
-                itemcount = ItemMax;
+
                 initProc();
             }
 
@@ -112,9 +111,18 @@ namespace yoketoruvs
             Point mp = PointToClient(MousePosition);
             chrs[PlayerIndex].Left = mp.X - chrs[PlayerIndex].Width / 2;
             chrs[PlayerIndex].Top = mp.Y - chrs[PlayerIndex].Height / 2;
+            if (timecount > 279)
+            {
+                chrs[PlayerIndex].Visible = false;
+                chrs[PlayerIndex].Visible = false;
+                chrs[PlayerIndex].Visible = true;
+                chrs[PlayerIndex].Visible = true;
+            }
 
             for (int i = EnemyIndex; i < ChrMax; i++)
             {
+                if (!chrs[i].Visible) continue;
+
                 chrs[i].Left += vx[i];
                 chrs[i].Top += vy[i];
 
@@ -138,7 +146,8 @@ namespace yoketoruvs
                 if (    (mp.X >= chrs[i].Left)
                      && (mp.X < chrs[i].Right)
                      && (mp.Y >= chrs[i].Top)
-                     && (mp.Y < chrs[i].Bottom))
+                     && (mp.Y < chrs[i].Bottom)
+                     && chrs[i].Visible == true)
                 {
                     //timer1.Enabled = false;// aが0かつbが0
                     //nextState = State.Gameover;
@@ -147,29 +156,29 @@ namespace yoketoruvs
                     //敵
                     if (chrs[i].Text == EnemyText)
                     {
-                        nextState = State.Gameover;
-                        chrs[PlayerIndex].Text = "(oAo)";
+                        if (timecount < 280)
+                        {
+                            nextState = State.Gameover;
+                            chrs[PlayerIndex].Text = "(oAo)";
+                        }
                     }
                     else
                     {
                         //アイテム
                         chrs[i].Visible = false;
-                        vx[i] = 0;
                         itemcount -= 1;
                         
-                        if(itemcount<0)
+                        if(itemcount <= 0)
                         {
-                            if (timecount > hiscore)
-                            {
-                                hiscore = timecount;
-                            }
+
                             nextState = State.Clear;
 
                         }
 
                     }
                 }
-                if (timecount == 0)
+                if (    (timecount <= 0)
+                    &&  (nextState == State.None))
                 {
                     nextState = State.Gameover;
                     chrs[PlayerIndex].Text = "(´･ω･`)";
@@ -207,9 +216,13 @@ namespace yoketoruvs
                         chrs[i].Top = rand.Next(ClientSize.Height - chrs[i].Height);
                         vx[i] = rand.Next(-SpeedMax, SpeedMax + 1);
                         vy[i] = rand.Next(-SpeedMax, SpeedMax + 1);
+                        chrs[i].Visible = true;
                     }
 
-                        break;
+                    timecount = 301;
+                    itemcount = ItemMax;
+
+                    break;
 
                 case State.Gameover:
                     gameoverLabel.Visible = true;
@@ -220,7 +233,12 @@ namespace yoketoruvs
                     clearLabel.Visible = true;
                     titleBotton.Visible = true;
                     HighScoreLabel.Visible = true;
-                    HighScoreLabel.Text = "HighScore " + hiscore;
+                    if (timecount > hiscore)
+                    {
+                        hiscore = timecount;
+                        HighScoreLabel.Text = "HighScore " + hiscore;
+                    }
+                   
                     break;
             }
         }

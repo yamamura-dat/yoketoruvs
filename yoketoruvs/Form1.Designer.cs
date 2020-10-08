@@ -81,11 +81,11 @@
             // 
             this.TimeLabel.AutoSize = true;
             this.TimeLabel.Font = new System.Drawing.Font("ＭＳ ゴシック", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.TimeLabel.Location = new System.Drawing.Point(12, 9);
+            this.TimeLabel.Location = new System.Drawing.Point(11, 9);
             this.TimeLabel.Name = "TimeLabel";
             this.TimeLabel.Size = new System.Drawing.Size(132, 27);
             this.TimeLabel.TabIndex = 3;
-            this.TimeLabel.Text = "Time 100";
+            this.TimeLabel.Text = "Time 300";
             // 
             // leftLabel
             // 
