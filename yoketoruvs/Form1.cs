@@ -41,8 +41,12 @@ namespace yoketoruvs
         State currentState = State.None;
         State nextState = State.Title;
 
+        const int SpeedMax = 15;
         int[] vx = new int[ChrMax];
         int[] vy = new int[ChrMax];
+        int itemcount = ItemMax;
+        int timecount = 100;
+        int hiscore = 0;
 
         [DllImport("user32.dll")]
         public static extern short GetAsyncKeyState(int vKey);
@@ -68,6 +72,7 @@ namespace yoketoruvs
                 {
                     chrs[i].Text = ItemText;
                 }
+                chrs[i].Font = tempLabel.Font;
                 Controls.Add(chrs[i]);
             }
         }
@@ -75,6 +80,8 @@ namespace yoketoruvs
         {
             if (nextState != State.None)
             {
+                timecount = 100;
+                itemcount = ItemMax;
                 initProc();
             }
 
@@ -94,13 +101,80 @@ namespace yoketoruvs
             {
                 UpdataGame();
             }
+
         }
 
         void UpdataGame()
         {
+            timecount--;
+            TimeLabel.Text = "Time " + timecount;
+            leftLabel.Text = "★:" + itemcount;
             Point mp = PointToClient(MousePosition);
-            mp = PointToClient(mp);
-  
+            chrs[PlayerIndex].Left = mp.X - chrs[PlayerIndex].Width / 2;
+            chrs[PlayerIndex].Top = mp.Y - chrs[PlayerIndex].Height / 2;
+
+            for (int i = EnemyIndex; i < ChrMax; i++)
+            {
+                chrs[i].Left += vx[i];
+                chrs[i].Top += vy[i];
+
+                if (chrs[i].Left < 0)
+                {
+                    vx[i] = Math.Abs(vx[i]);
+                }
+                if (chrs[i].Top < 0)
+                {
+                    vy[i] = Math.Abs(vy[i]);
+                }
+                if (chrs[i].Right > ClientSize.Width)
+                {
+                    vx[i] = -Math.Abs(vx[i]);
+                }
+                if (chrs[i].Bottom > ClientSize.Height)
+                {
+                    vy[i] = -Math.Abs(vy[i]);
+                }
+
+                if (    (mp.X >= chrs[i].Left)
+                     && (mp.X < chrs[i].Right)
+                     && (mp.Y >= chrs[i].Top)
+                     && (mp.Y < chrs[i].Bottom))
+                {
+                    //timer1.Enabled = false;// aが0かつbが0
+                    //nextState = State.Gameover;
+                    //chrs[PlayerIndex].Text = "(´･ω･`)";
+
+                    //敵
+                    if (chrs[i].Text == EnemyText)
+                    {
+                        nextState = State.Gameover;
+                        chrs[PlayerIndex].Text = "(oAo)";
+                    }
+                    else
+                    {
+                        //アイテム
+                        chrs[i].Visible = false;
+                        vx[i] = 0;
+                        itemcount -= 1;
+                        
+                        if(itemcount<0)
+                        {
+                            if (timecount > hiscore)
+                            {
+                                hiscore = timecount;
+                            }
+                            nextState = State.Clear;
+
+                        }
+
+                    }
+                }
+                if (timecount == 0)
+                {
+                    nextState = State.Gameover;
+                    chrs[PlayerIndex].Text = "(´･ω･`)";
+                }
+            }
         }
 
         void initProc()
@@ -118,6 +192,7 @@ namespace yoketoruvs
                     gameoverLabel.Visible = false;
                     titleBotton.Visible = false;
                     clearLabel.Visible = false;
+                    HighScoreLabel.Text = "HighScore " + hiscore;
                     break;
 
                 case State.Game:
@@ -130,6 +205,8 @@ namespace yoketoruvs
                     {
                         chrs[i].Left = rand.Next(ClientSize.Width - chrs[i].Width);
                         chrs[i].Top = rand.Next(ClientSize.Height - chrs[i].Height);
+                        vx[i] = rand.Next(-SpeedMax, SpeedMax + 1);
+                        vy[i] = rand.Next(-SpeedMax, SpeedMax + 1);
                     }
 
                         break;
@@ -143,6 +220,7 @@ namespace yoketoruvs
                     clearLabel.Visible = true;
                     titleBotton.Visible = true;
                     HighScoreLabel.Visible = true;
+                    HighScoreLabel.Text = "HighScore " + hiscore;
                     break;
             }
         }
@@ -159,6 +237,8 @@ namespace yoketoruvs
         private void startbotton_Click(object sender, EventArgs e)
         {
             nextState = State.Game;
+            chrs[PlayerIndex].Text = "(｀・ω・´)";
+           
         }
 
         private void titleBotton_Click(object sender, EventArgs e)
